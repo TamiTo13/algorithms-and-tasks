@@ -1,0 +1,74 @@
+#include <iostream> 
+#include <cmath>
+using namespace std;
+
+const int maxVisochina = 20;
+const int maxShirochina = 40;
+const int minParametur = 4;
+
+int position(int poziciq, int visochina, char pole[][maxShirochina]){
+ unsigned int i= visochina-1;
+  for (; i>=0; --i)
+  {
+    cout<<pole[i][poziciq-1];
+    if (pole[i][poziciq-1] =='\0') 
+    {
+      return i; break;
+    }
+  }
+  return -1;
+}
+
+void print(int poziciq, int visochina, int shirochina,char pole[][maxShirochina], bool player)
+{
+   for (int i = 0; i<visochina; i++)
+   {
+      for ( int p=0; p<shirochina; p++)
+      {
+        if (poziciq-1==p && position(p,visochina,pole)==i) 
+        {
+          if(player) 
+          {
+          cout<<" |o" ; 
+          }
+          else
+          {
+           cout<<"|x";
+          }   
+         continue;  
+        }
+        else if(position(p,visochina,pole)== -1) 
+        {
+          cout<<"Column is full";
+        }
+        cout<<"|";
+      }
+      cout<<endl;
+   }
+}
+
+
+
+int main (){
+   int visochina,shirochina, poziciq;
+   poziciq = 2;
+  bool player = true;
+  ErrorCase: cout<<"Height and Width?"<<endl;
+  cin>>visochina>>shirochina;
+  if(visochina < minParametur || shirochina < minParametur || visochina > maxVisochina || shirochina> maxShirochina)
+  {
+    cout<<"Please correct."<<endl; goto ErrorCase;
+  }
+  char pole[visochina][maxShirochina] = {'\0'};
+  cout<<position(1, visochina,pole)<<endl;
+  print(-1, visochina,shirochina+1,pole,player);
+  do
+  {
+  player? cout<<"Player 1 turn:" :  cout<<"Player 2 turn: ";
+  cin>>poziciq;
+  if(player){pole[position(poziciq, visochina, pole)][poziciq-1]='o';}
+  else {pole[position(poziciq, visochina, pole)][poziciq-1]='x';}
+  print(poziciq, visochina,shirochina+1,pole,player);
+  player? player=false:player=true;
+  } while(true); 
+  return 0; 
